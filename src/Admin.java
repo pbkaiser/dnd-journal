@@ -2,8 +2,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Admin implements Serializable {
-    private int day = 1;
-    private int session = 0;
+    private int day;
+    private int session;
     private ArrayList<Entry> entries;
     private ArrayList<Entity> characters;
     private ArrayList<Entity> locations;
@@ -11,6 +11,8 @@ public class Admin implements Serializable {
         entries = new ArrayList<>();
         characters = new ArrayList<>();
         locations = new ArrayList<>();
+        day = 1;
+        session = 0;
     }
     public void setDay(int day) {
         this.day = day;

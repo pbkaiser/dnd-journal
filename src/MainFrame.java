@@ -8,6 +8,18 @@ public class MainFrame {
     private ImageIcon lupeIcon = new ImageIcon(getClass().getResource("/lupe.png"));
     private ImageIcon sonneMondIcon = new ImageIcon(getClass().getResource("/tag.png"));
     private ImageIcon sternIcon = new ImageIcon(getClass().getResource("/stern.png"));
+
+    private ImageIcon deleteIcon = new ImageIcon(getClass().getResource("/delete.png"));
+    private ImageIcon recapIcon = new ImageIcon(getClass().getResource("/recap.png"));
+    private ImageIcon saveIcon = new ImageIcon(getClass().getResource("/save.png"));
+    private ImageIcon notebookIcon = new ImageIcon(getClass().getResource("/notebook.png"));
+
+    JButton buttonDelete;
+    JButton buttonRecap;
+    JButton buttonSave;
+    JButton buttonNotebook;
+
+
     private JTextArea textArea;
     private JTextField textField;
     private JScrollPane scrollPane;
@@ -15,6 +27,7 @@ public class MainFrame {
     private JButton buttonLupe;
     private JButton buttonTag;
     private JButton buttonStern;
+    JFrame frame;
     MainFrame() {
         frame();
     }
@@ -22,8 +35,26 @@ public class MainFrame {
         textArea = new JTextArea();
         textArea.setEditable(false);
         scrollPane = new JScrollPane(textArea);
+        textField = new JTextField("type here..");
 
-        textField = new JTextField("type here");
+        deleteIcon.setImage(deleteIcon.getImage().getScaledInstance(76, 76, Image.SCALE_SMOOTH));
+        buttonDelete = new JButton(deleteIcon);
+        buttonDelete.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        recapIcon.setImage(recapIcon.getImage().getScaledInstance(76, 76, Image.SCALE_SMOOTH));
+        buttonRecap = new JButton(recapIcon);
+        buttonRecap.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        saveIcon.setImage(saveIcon.getImage().getScaledInstance(76, 76, Image.SCALE_SMOOTH));
+        buttonSave = new JButton(saveIcon);
+        buttonSave.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        notebookIcon.setImage(notebookIcon.getImage().getScaledInstance(76, 76, Image.SCALE_SMOOTH));
+        buttonNotebook = new JButton(notebookIcon);
+        buttonNotebook.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
+        buttonDelete.setFocusPainted(false);
+        buttonRecap.setFocusPainted(false);
+        buttonSave.setFocusPainted(false);
+        buttonNotebook.setFocusPainted(false);
+
 
         plusIcon.setImage(plusIcon.getImage().getScaledInstance(76, 76, Image.SCALE_SMOOTH));
         buttonPlus = new JButton(plusIcon);
@@ -41,7 +72,7 @@ public class MainFrame {
         buttonStern = new JButton(sternIcon);
         buttonStern.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-        JFrame frame = new JFrame("DnD Journal");
+        frame = new JFrame("DnD Journal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(538,600);
@@ -55,6 +86,11 @@ public class MainFrame {
         scrollPane.setBounds(38, 200, 418, 300);
         textField.setBounds(38, 500, 418, 20);
 
+        buttonDelete.setBounds(38, 120, 76, 76);
+        buttonRecap.setBounds(152, 120, 76, 76);
+        buttonSave.setBounds(264, 120, 76, 76);
+        buttonNotebook.setBounds(380, 120, 76, 76);
+
         frame.setIconImage(icon.getImage());
         frame.getContentPane().setBackground(new Color(224, 199, 153));
         frame.add(buttonPlus);
@@ -63,6 +99,13 @@ public class MainFrame {
         frame.add(buttonStern);
         frame.add(scrollPane);
         frame.add(textField);
+        frame.add(buttonDelete);
+        frame.add(buttonRecap);
+        frame.add(buttonSave);
+        frame.add(buttonNotebook);
+        frame.setLocationRelativeTo(null);
+
+        frame.setLocation(frame.getX() - 250, frame.getY());
         frame.setVisible(true);
 
     }
