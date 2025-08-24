@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 
 public class Main {
     MainFrame mainFrame;
@@ -30,14 +29,21 @@ public class Main {
         mainFrame.buttonRecap.addActionListener(this::actionPerformed);
         mainFrame.buttonSave.addActionListener(this::actionPerformed);
         mainFrame.buttonNotebook.addActionListener(this::actionPerformed);
+        mainFrame.frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                SaveManager.saveAdmin(admin, "admin.dat");
+                System.exit(0);
+            }
+        });
     }
-    private void setLast(String name)
-    {
-        for(int i = 0; i < admin.getCharacters().size(); i++) {
+
+    private void setLast(String name) {
+        for (int i = 0; i < admin.getCharacters().size(); i++) {
             admin.getCharacters().get(i).setLast(false);
         }
-        for(int i = 0; i < admin.getCharacters().size(); i++) {
-            if(admin.getCharacters().get(i).getName().equals(name)) {
+        for (int i = 0; i < admin.getCharacters().size(); i++) {
+            if (admin.getCharacters().get(i).getName().equals(name)) {
                 admin.getCharacters().get(i).setLast(true);
             }
         }
@@ -51,7 +57,7 @@ public class Main {
             deleteFrame.frame.setLocation(
                     mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,
                     mainFrame.frame.getY());
-            for(Entity entity : admin.getCharacters()) {
+            for (Entity entity : admin.getCharacters()) {
                 deleteFrame.listModel.addElement(entity.getName());
             }
             deleteFrame.list.addMouseListener(new MouseAdapter() {
@@ -79,7 +85,6 @@ public class Main {
                     }
                 }
             });
-
 
 
         }
@@ -131,7 +136,7 @@ public class Main {
 
             searchFrame.buttonListChar.addActionListener(ev -> {
                 searchList = new SearchList();
-                for(Entity entity : admin.getCharacters()) {
+                for (Entity entity : admin.getCharacters()) {
                     searchList.listModel.addElement(entity.getName());
                 }
                 searchList.list.addMouseListener(new MouseAdapter() {
@@ -162,7 +167,7 @@ public class Main {
             });
             searchFrame.buttonListLocation.addActionListener(ev -> {
                 searchList = new SearchList();
-                for(Entity entity : admin.getLocations()) {
+                for (Entity entity : admin.getLocations()) {
                     searchList.listModel.addElement(entity.getName());
                 }
                 searchList.list.addMouseListener(new MouseAdapter() {
@@ -281,14 +286,10 @@ public class Main {
                             admin.getLocations().get(i).addEntry(entry);
                         }
                     }
-                    for(String pronoun : admin.getPronouns())
-                    {
-                        if(word.equals(pronoun)&&!valid)
-                        {
-                            for(int i = 0; i < admin.getCharacters().size(); i++)
-                            {
-                                if(admin.getCharacters().get(i).getLast())
-                                {
+                    for (String pronoun : admin.getPronouns()) {
+                        if (word.equals(pronoun) && !valid) {
+                            for (int i = 0; i < admin.getCharacters().size(); i++) {
+                                if (admin.getCharacters().get(i).getLast()) {
                                     admin.getCharacters().get(i).addEntry(entry);
                                     valid = true;
                                     break;

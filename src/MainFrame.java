@@ -73,7 +73,8 @@ public class MainFrame {
         buttonStern.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         frame = new JFrame("DnD Journal");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(538,600);
         frame.setLayout(null);
@@ -112,6 +113,7 @@ public class MainFrame {
     public JButton getButtonPlus() {
         return buttonPlus;
     }
+
     public JButton getButtonLupe() {
         return buttonLupe;
     }
