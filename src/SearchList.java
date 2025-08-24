@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DeleteFrame {
+public class SearchList {
     JFrame frame;
     ImageIcon icon;
     DefaultListModel<String> listModel;
     JList<String> list;
-    public DeleteFrame() {
-        frame = new JFrame("Delete");
+    public SearchList() {
+        frame = new JFrame("Characters");
         icon = new ImageIcon(getClass().getResource("/notebook.png"));
         frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

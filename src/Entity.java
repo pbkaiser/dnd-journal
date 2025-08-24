@@ -5,11 +5,16 @@ public class Entity implements Serializable {
     private String name;
     private ArrayList<Entry> entries;
     private boolean fav;
+    private boolean last;
 
     Entity(String name) {
         this.name = name;
         entries = new ArrayList<>();
+        fav = false;
+        last = false;
     }
+    public boolean getLast() {return last;}
+    public void setLast(boolean last) {this.last = last;}
     public boolean getFav() {
         return fav;
     }

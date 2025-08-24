@@ -1,4 +1,8 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 public class Main {
     MainFrame mainFrame;
@@ -6,6 +10,7 @@ public class Main {
     SessionDayFrame sessionDayFrame;
     DeleteFrame deleteFrame;
     Admin admin;
+    SearchList searchList;
     AddFrame addFrame;
 
     public static void main(String[] args) {
@@ -13,8 +18,8 @@ public class Main {
     }
 
     public Main() {
-        //admin = LoadManager.loadAdmin("admin.dat");
-        admin = new Admin();
+        admin = LoadManager.loadAdmin("admin.dat");
+        //admin = new Admin();
         mainFrame = new MainFrame();
         mainFrame.getButtonPlus().addActionListener(this::actionPerformed);
         mainFrame.getButtonLupe().addActionListener(this::actionPerformed);
@@ -26,17 +31,56 @@ public class Main {
         mainFrame.buttonSave.addActionListener(this::actionPerformed);
         mainFrame.buttonNotebook.addActionListener(this::actionPerformed);
     }
-
+    private void setLast(String name)
+    {
+        for(int i = 0; i < admin.getCharacters().size(); i++) {
+            admin.getCharacters().get(i).setLast(false);
+        }
+        for(int i = 0; i < admin.getCharacters().size(); i++) {
+            if(admin.getCharacters().get(i).getName().equals(name)) {
+                admin.getCharacters().get(i).setLast(true);
+            }
+        }
+    }
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFrame.buttonNotebook) {
             mainFrame.setTextArea("notebook");
         }
         if (e.getSource() == mainFrame.buttonDelete) {
-            mainFrame.setTextArea("delete");
             deleteFrame = new DeleteFrame();
             deleteFrame.frame.setLocation(
-                    mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,  // 20px rechts daneben
+                    mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,
                     mainFrame.frame.getY());
+            for(Entity entity : admin.getCharacters()) {
+                deleteFrame.listModel.addElement(entity.getName());
+            }
+            deleteFrame.list.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) { // Doppelklick
+                        int index = deleteFrame.list.locationToIndex(e.getPoint());
+                        if (index >= 0) {
+                            String item = deleteFrame.listModel.getElementAt(index);
+                            int confirm = JOptionPane.showConfirmDialog(deleteFrame.frame,
+                                    "delete '" + item + "' ?",
+                                    "confirm delete",
+                                    JOptionPane.YES_NO_OPTION);
+                            if (confirm == JOptionPane.YES_OPTION) {
+                                deleteFrame.listModel.remove(index);
+
+                                for (int i = 0; i < admin.getCharacters().size(); i++) {
+                                    if (admin.getCharacters().get(i).getName().equals(item)) {
+                                        admin.getCharacters().remove(i);
+                                        i--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
 
         }
         if (e.getSource() == mainFrame.buttonRecap) {
@@ -66,6 +110,7 @@ public class Main {
                 admin.addEntry(new Entry(addFrame.nameChar.getText() + ": " + addFrame.charDescription.getText(), admin.getDay(), admin.getSession()));
                 addFrame.frame.dispose();
                 mainFrame.setTextArea(admin.getEntries().get(admin.getEntries().size() - 1).toString());
+                setLast(admin.getCharacters().get(admin.getCharacters().size() - 1).getName()); //hier der test
             });
             addFrame.buttonLocation.addActionListener(ev -> {
                 admin.addLocation(new Entity(addFrame.nameLocation.getText()));
@@ -85,16 +130,66 @@ public class Main {
             );
 
             searchFrame.buttonListChar.addActionListener(ev -> {
-                for (Entity chars : admin.getCharacters()) {
-                    mainFrame.setTextArea(chars.getName());
-                    searchFrame.frame.dispose();
+                searchList = new SearchList();
+                for(Entity entity : admin.getCharacters()) {
+                    searchList.listModel.addElement(entity.getName());
                 }
+                searchList.list.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) { // Doppelklick
+                            int index = searchList.list.locationToIndex(e.getPoint());
+                            if (index >= 0) {
+                                String item = searchList.listModel.getElementAt(index);
+                                int confirm = JOptionPane.showConfirmDialog(searchList.frame,
+                                        "show '" + item + "' ?",
+                                        "Character",
+                                        JOptionPane.YES_NO_OPTION);
+                                if (confirm == JOptionPane.YES_OPTION) {
+
+                                    for (int i = 0; i < admin.getCharacters().size(); i++) {
+                                        if (admin.getCharacters().get(i).getName().equals(item)) {
+                                            mainFrame.setTextArea(admin.getCharacters().get(i).toString());
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
             });
             searchFrame.buttonListLocation.addActionListener(ev -> {
-                for (Entity locs : admin.getLocations()) {
-                    mainFrame.setTextArea(locs.getName());
+                searchList = new SearchList();
+                for(Entity entity : admin.getLocations()) {
+                    searchList.listModel.addElement(entity.getName());
                 }
-                searchFrame.frame.dispose();
+                searchList.list.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) { // Doppelklick
+                            int index = searchList.list.locationToIndex(e.getPoint());
+                            if (index >= 0) {
+                                String item = searchList.listModel.getElementAt(index);
+                                int confirm = JOptionPane.showConfirmDialog(searchList.frame,
+                                        "show '" + item + "' ?",
+                                        "Location",
+                                        JOptionPane.YES_NO_OPTION);
+                                if (confirm == JOptionPane.YES_OPTION) {
+
+                                    for (int i = 0; i < admin.getLocations().size(); i++) {
+                                        if (admin.getLocations().get(i).getName().equals(item)) {
+                                            mainFrame.setTextArea(admin.getLocations().get(i).toString());
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
             });
             searchFrame.buttonSearch.addActionListener(ev -> {
                 String searchword = searchFrame.searchField.getText();
@@ -167,6 +262,7 @@ public class Main {
         if (e.getSource() == mainFrame.getTextField()) {
             String input = mainFrame.getTextField().getText().trim();
             if (!input.isEmpty()) {
+                boolean valid = false;
                 mainFrame.setTextArea(input);
                 mainFrame.getTextField().setText("");
                 Entry entry = new Entry(input, admin.getDay(), admin.getSession());
@@ -175,12 +271,29 @@ public class Main {
                     for (int i = 0; i < admin.getCharacters().size(); i++) {
                         if (Compare.compare(admin.getCharacters().get(i).getName(), word)) {
                             admin.getCharacters().get(i).addEntry(entry);
+                            setLast(admin.getCharacters().get(i).getName());    //hier auch der test
+                            valid = true;
                             break;
                         }
                     }
                     for (int i = 0; i < admin.getLocations().size(); i++) {
                         if (Compare.compare(admin.getLocations().get(i).getName(), word)) {
                             admin.getLocations().get(i).addEntry(entry);
+                        }
+                    }
+                    for(String pronoun : admin.getPronouns())
+                    {
+                        if(word.equals(pronoun)&&!valid)
+                        {
+                            for(int i = 0; i < admin.getCharacters().size(); i++)
+                            {
+                                if(admin.getCharacters().get(i).getLast())
+                                {
+                                    admin.getCharacters().get(i).addEntry(entry);
+                                    valid = true;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }

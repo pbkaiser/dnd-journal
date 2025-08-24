@@ -4,10 +4,25 @@ import java.util.ArrayList;
 public class Admin implements Serializable {
     private int day;
     private int session;
+    private String[] pronouns;
     private ArrayList<Entry> entries;
     private ArrayList<Entity> characters;
     private ArrayList<Entity> locations;
     public Admin() {
+        pronouns = new String[] {
+                "er", "ihn", "ihm", "seiner",
+                "sein", "seine", "seines", "seinem", "seinen",
+                "sie", "ihr", "ihrer",
+                "ihre", "ihres", "ihrem", "ihren",
+                "es",
+                "sie", "ihnen", "ihrer",
+                "ihr", "ihre", "ihres", "ihrem", "ihren",
+                "he", "him", "his",
+                "she", "her", "hers",
+                "it", "its",
+                "they", "them", "their", "theirs"
+        };
+
         entries = new ArrayList<>();
         characters = new ArrayList<>();
         locations = new ArrayList<>();
@@ -25,6 +40,9 @@ public class Admin implements Serializable {
     }
     public int getSession() {
         return session;
+    }
+    public String[] getPronouns() {
+        return pronouns;
     }
     public ArrayList<Entry> getEntries() {
         return entries;
