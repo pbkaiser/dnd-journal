@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+
 public class MainFrame {
 
     private ImageIcon icon = new ImageIcon(getClass().getResource("/notebook.png"));
@@ -28,9 +29,11 @@ public class MainFrame {
     private JButton buttonTag;
     private JButton buttonStern;
     JFrame frame;
+
     MainFrame() {
         frame();
     }
+
     private void frame() {
         textArea = new JTextArea();
         textArea.setEditable(false);
@@ -76,7 +79,7 @@ public class MainFrame {
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(538,600);
+        frame.setSize(538, 600);
         frame.setLayout(null);
 
 
@@ -110,6 +113,7 @@ public class MainFrame {
         frame.setVisible(true);
 
     }
+
     public JButton getButtonPlus() {
         return buttonPlus;
     }
@@ -117,17 +121,25 @@ public class MainFrame {
     public JButton getButtonLupe() {
         return buttonLupe;
     }
+
     public JButton getButtonTag() {
         return buttonTag;
     }
+
     public JButton getButtonStern() {
         return buttonStern;
     }
+
     public JTextField getTextField() {
         return textField;
     }
+
     public void setTextArea(String text) {
         textArea.append(text + "\n");
+    }
+
+    public void clearTextArea() {
+        textArea.setText("");
     }
 
 }

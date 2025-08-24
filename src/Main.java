@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,15 +49,18 @@ public class Main {
             }
         }
     }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFrame.buttonNotebook) {
-            mainFrame.setTextArea("notebook");
+            for (Entry entry : admin.getEntries()) {
+                if (entry.getSession() == admin.getSession() - 1) {
+                    mainFrame.setTextArea(entry.toString());
+                }
+            }
         }
         if (e.getSource() == mainFrame.buttonDelete) {
             deleteFrame = new DeleteFrame();
-            deleteFrame.frame.setLocation(
-                    mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,
-                    mainFrame.frame.getY());
+            deleteFrame.frame.setLocation(mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10, mainFrame.frame.getY());
             for (Entity entity : admin.getCharacters()) {
                 deleteFrame.listModel.addElement(entity.getName());
             }
@@ -66,11 +70,14 @@ public class Main {
                     if (e.getClickCount() == 2) { // Doppelklick
                         int index = deleteFrame.list.locationToIndex(e.getPoint());
                         if (index >= 0) {
+                            UIManager.put("OptionPane.background", new Color(224, 199, 153));
+                            UIManager.put("Panel.background", new Color(224, 199, 153));
+                            UIManager.put("OptionPane.messageForeground", Color.DARK_GRAY);
+                            UIManager.put("Button.background", new Color(224, 199, 153));
+                            UIManager.put("Button.foreground", Color.BLACK);
+
                             String item = deleteFrame.listModel.getElementAt(index);
-                            int confirm = JOptionPane.showConfirmDialog(deleteFrame.frame,
-                                    "delete '" + item + "' ?",
-                                    "confirm delete",
-                                    JOptionPane.YES_NO_OPTION);
+                            int confirm = JOptionPane.showConfirmDialog(deleteFrame.frame, "delete '" + item + "' ?", "confirm delete", JOptionPane.YES_NO_OPTION);
                             if (confirm == JOptionPane.YES_OPTION) {
                                 deleteFrame.listModel.remove(index);
 
@@ -89,11 +96,7 @@ public class Main {
 
         }
         if (e.getSource() == mainFrame.buttonRecap) {
-            for (Entry entry : admin.getEntries()) {
-                if (entry.getSession() == admin.getSession() - 1) {
-                    mainFrame.setTextArea(entry.toString());
-                }
-            }
+            mainFrame.clearTextArea();
         }
 
         if (e.getSource() == mainFrame.buttonSave) {
@@ -102,15 +105,13 @@ public class Main {
         }
         if (e.getSource() == mainFrame.getButtonPlus()) {
             addFrame = new AddFrame();
-            addFrame.frame.setLocation(
-                    mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,  // 20px rechts daneben
+            addFrame.frame.setLocation(mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,  // 20px rechts daneben
                     mainFrame.frame.getY()                               // gleiche Höhe
             );
 
             addFrame.buttonChar.addActionListener(ev -> {
                 admin.addCharacter(new Entity(addFrame.nameChar.getText()));
-                admin.getCharacters().get(admin.getCharacters().size() - 1)
-                        .addEntry(new Entry(addFrame.charDescription.getText(), admin.getDay(), admin.getSession()));
+                admin.getCharacters().get(admin.getCharacters().size() - 1).addEntry(new Entry(addFrame.charDescription.getText(), admin.getDay(), admin.getSession()));
                 admin.getCharacters().get(admin.getCharacters().size() - 1).setFav(addFrame.favChar.isSelected());
                 admin.addEntry(new Entry(addFrame.nameChar.getText() + ": " + addFrame.charDescription.getText(), admin.getDay(), admin.getSession()));
                 addFrame.frame.dispose();
@@ -119,8 +120,7 @@ public class Main {
             });
             addFrame.buttonLocation.addActionListener(ev -> {
                 admin.addLocation(new Entity(addFrame.nameLocation.getText()));
-                admin.getLocations().get(admin.getLocations().size() - 1)
-                        .addEntry(new Entry(addFrame.locationDescription.getText(), admin.getDay(), admin.getSession()));
+                admin.getLocations().get(admin.getLocations().size() - 1).addEntry(new Entry(addFrame.locationDescription.getText(), admin.getDay(), admin.getSession()));
                 admin.getLocations().get(admin.getLocations().size() - 1).setFav(addFrame.favLocation.isSelected());
                 admin.addEntry(new Entry(addFrame.nameLocation.getText() + ": " + addFrame.locationDescription.getText(), admin.getDay(), admin.getSession()));
                 addFrame.frame.dispose();
@@ -129,8 +129,7 @@ public class Main {
         }
         if (e.getSource() == mainFrame.getButtonLupe()) {
             searchFrame = new SearchFrame();
-            searchFrame.frame.setLocation(
-                    mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,  // 20px rechts daneben
+            searchFrame.frame.setLocation(mainFrame.frame.getX() + mainFrame.frame.getWidth() + 10,  // 20px rechts daneben
                     mainFrame.frame.getY()                               // gleiche Höhe
             );
 
@@ -145,11 +144,13 @@ public class Main {
                         if (e.getClickCount() == 2) { // Doppelklick
                             int index = searchList.list.locationToIndex(e.getPoint());
                             if (index >= 0) {
+                                UIManager.put("OptionPane.background", new Color(224, 199, 153));
+                                UIManager.put("Panel.background", new Color(224, 199, 153));
+                                UIManager.put("OptionPane.messageForeground", Color.DARK_GRAY);
+                                UIManager.put("Button.background", new Color(224, 199, 153));
+                                UIManager.put("Button.foreground", Color.BLACK);
                                 String item = searchList.listModel.getElementAt(index);
-                                int confirm = JOptionPane.showConfirmDialog(searchList.frame,
-                                        "show '" + item + "' ?",
-                                        "Character",
-                                        JOptionPane.YES_NO_OPTION);
+                                int confirm = JOptionPane.showConfirmDialog(searchList.frame, "show '" + item + "' ?", "", JOptionPane.YES_NO_OPTION);
                                 if (confirm == JOptionPane.YES_OPTION) {
 
                                     for (int i = 0; i < admin.getCharacters().size(); i++) {
@@ -176,11 +177,13 @@ public class Main {
                         if (e.getClickCount() == 2) { // Doppelklick
                             int index = searchList.list.locationToIndex(e.getPoint());
                             if (index >= 0) {
+                                UIManager.put("OptionPane.background", new Color(224, 199, 153));
+                                UIManager.put("Panel.background", new Color(224, 199, 153));
+                                UIManager.put("OptionPane.messageForeground", Color.DARK_GRAY);
+                                UIManager.put("Button.background", new Color(224, 199, 153));
+                                UIManager.put("Button.foreground", Color.BLACK);
                                 String item = searchList.listModel.getElementAt(index);
-                                int confirm = JOptionPane.showConfirmDialog(searchList.frame,
-                                        "show '" + item + "' ?",
-                                        "Location",
-                                        JOptionPane.YES_NO_OPTION);
+                                int confirm = JOptionPane.showConfirmDialog(searchList.frame, "show '" + item + "' ?", "", JOptionPane.YES_NO_OPTION);
                                 if (confirm == JOptionPane.YES_OPTION) {
 
                                     for (int i = 0; i < admin.getLocations().size(); i++) {
@@ -223,6 +226,7 @@ public class Main {
                     mainFrame.setTextArea("No location found.");
                 }
                 if (charFound == 0 && locFound == 0) {
+                    mainFrame.setTextArea("Search results Entries:");
                     for (Entry entry : admin.getEntries()) {
                         if (Compare.compare(entry.toString(), searchword)) {
                             elseFound++;
