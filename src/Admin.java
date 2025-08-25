@@ -5,6 +5,7 @@ public class Admin implements Serializable {
     private int day;
     private int session;
     private String[] pronouns;
+    private String[] pronouns2;
     private ArrayList<Entry> entries;
     private ArrayList<Entity> characters;
     private ArrayList<Entity> locations;
@@ -22,12 +23,19 @@ public class Admin implements Serializable {
                 "it", "its",
                 "they", "them", "their", "theirs"
         };
+        pronouns2 = new String[] {
+                "ich", "mir", "meinem", "meinen", "meine", "wir", "uns", "unser", "unserem", "unseren", "unsere", "unseres",
+                "I", "me", "my", "mine",
+                "we", "us", "our", "ours"
+        };
 
         entries = new ArrayList<>();
         characters = new ArrayList<>();
         locations = new ArrayList<>();
         day = 1;
         session = 0;
+        this.addCharacter(new Entity("Player"));
+        this.getCharacters().get(0).setFav(true);
     }
     public void setDay(int day) {
         this.day = day;
@@ -43,6 +51,9 @@ public class Admin implements Serializable {
     }
     public String[] getPronouns() {
         return pronouns;
+    }
+    public String[] getPronouns2() {
+        return pronouns2;
     }
     public ArrayList<Entry> getEntries() {
         return entries;

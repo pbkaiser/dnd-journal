@@ -16,6 +16,9 @@ public class Entity implements Serializable {
     public boolean getLast() {return last;}
     public void setLast(boolean last) {this.last = last;}
     public boolean getFav() {
+        if(name.equals("Player")) {
+            return false;
+        }
         return fav;
     }
     public void setFav(boolean fav) {

@@ -301,6 +301,12 @@ public class Main {
                             }
                         }
                     }
+                    for (String pronoun : admin.getPronouns2()) {
+                        if (word.equals(pronoun)) {
+                            admin.getCharacters().get(0).addEntry(entry);
+                            break;
+                        }
+                    }
                 }
                 admin.addEntry(entry);
             }
