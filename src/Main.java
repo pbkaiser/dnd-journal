@@ -48,7 +48,7 @@ public class Main {
                 admin.getCharacters().get(i).setLast(true);
             }
         }
-    }
+    }//test
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFrame.buttonNotebook) {
